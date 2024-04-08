@@ -1,19 +1,5 @@
 # bustrackerapp
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.de# bustrackerapp
-
 A new Flutter project designed to track buses in real-time, offering users the convenience of tracking bus locations, schedules, and more.
 
 ## Getting Started
@@ -31,5 +17,5 @@ If this is your first Flutter project, here are a few resources to get you start
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For additional help with Flutter development, consider exploring the [online documentation](https://docs.flutter.dev/), which offers tutorials, samples, guidance on mobile development, and a full API reference.v/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For additional help with Flutter development, consider exploring the [online documentation](https://docs.flutter.dev/), which offers tutorials, samples, guidance on mobile development, and a full API reference.
+
