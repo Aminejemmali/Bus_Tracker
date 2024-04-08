@@ -18,4 +18,3 @@ If this is your first Flutter project, here are a few resources to get you start
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
 For additional help with Flutter development, consider exploring the [online documentation](https://docs.flutter.dev/), which offers tutorials, samples, guidance on mobile development, and a full API reference.
-
