@@ -41,17 +41,17 @@ class _EditBusFormState extends State<EditBusForm> {
         _modelController.text = station.model;
 
       } else {
-        print('Bus not found for ID: ${widget.busId}');
+        print('Bus non trouvé pour lID: ${widget.busId}');
       }
     } catch (e) {
-      print('Error loading Bus: $e');
+      print('Erreur de chargement du bus: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Station')),
+      appBar: AppBar(title: const Text('Modifier le bus')),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -61,10 +61,10 @@ class _EditBusFormState extends State<EditBusForm> {
             children: <Widget>[
               TextFormField(
                 controller: _numberController,
-                decoration: const InputDecoration(labelText: 'Bus Number'),
+                decoration: const InputDecoration(labelText: 'Numéro de bus'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a Bus Number.';
+                    return 'Veuillez saisir un numéro de bus.';
                   }
                   return null;
                 },
@@ -72,10 +72,10 @@ class _EditBusFormState extends State<EditBusForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _modelController,
-                decoration: const InputDecoration(labelText: 'Bus Model'),
+                decoration: const InputDecoration(labelText: 'Modèle de bus'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a Bus Model.';
+                    return 'Veuillez saisir un modèle de bus.';
                   }
                   return null;
                 },
@@ -89,7 +89,7 @@ class _EditBusFormState extends State<EditBusForm> {
                     _editBus();
                   }
                 },
-                child: const Text('Save Changes'),
+                child: const Text('Enregistrer les modifications'),
               ),
             ],
           ),
@@ -114,7 +114,7 @@ class _EditBusFormState extends State<EditBusForm> {
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Bus  "${bus.registrationNumber}" updated successfully!'),
+          content: Text('Bus  "${bus.registrationNumber}"mis à jour avec succès!'),
         ),
 
       );
@@ -122,7 +122,7 @@ class _EditBusFormState extends State<EditBusForm> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to update station. Please try again.'),
+          content: Text('Échec de la mise à jour du bus. Veuillez réessayer'),
         ),
       );
     }

@@ -40,17 +40,17 @@ class _BusesPageState extends State<BusesPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Deletion'),
-          content: Text('Are you sure you want to delete this bus?'),
+          title: Text('Confirmer la suppression'),
+          content: Text('Êtes-vous sûr de vouloir supprimer ce bus ?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: Text('Annuler'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: Text('Supprimer'),
               onPressed: () async {
                 Navigator.of(context).pop();
                 setState(() {
@@ -78,7 +78,7 @@ class _BusesPageState extends State<BusesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Available Buses'),
+        title: Text('Bus disponibles'),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
