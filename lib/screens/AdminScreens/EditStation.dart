@@ -49,17 +49,17 @@ class _EditStationFormState extends State<EditStationForm> {
         _altController.text= station.Alt.toString();
         _lagController.text=station.Lag.toString();
       } else {
-        print('Station not found for ID: ${widget.stationId}');
+        print('"Station non trouvée pour lidentifiant: ${widget.stationId}');
       }
     } catch (e) {
-      print('Error loading station: $e');
+      print('Erreur de chargement de la station: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Station')),
+      appBar: AppBar(title: const Text('Modifier la station')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -68,10 +68,10 @@ class _EditStationFormState extends State<EditStationForm> {
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Station Name'),
+                decoration: const InputDecoration(labelText: 'Nom de la station'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a station name.';
+                    return 'Veuillez saisir un nom de station.';
                   }
                   return null;
                 },
@@ -79,10 +79,10 @@ class _EditStationFormState extends State<EditStationForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _addressController,
-                decoration: const InputDecoration(labelText: 'Station Address'),
+                decoration: const InputDecoration(labelText: 'Adresse de la station'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a station address.';
+                    return 'Veuillez saisir une adresse de station.';
                   }
                   return null;
                 },
@@ -90,10 +90,10 @@ class _EditStationFormState extends State<EditStationForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _locationController,
-                decoration: const InputDecoration(labelText: 'Station Location'),
+                decoration: const InputDecoration(labelText: 'Station localisation'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a station location.';
+                    return 'Veuillez saisir une localisation de station.';
                   }
                   return null;
                 },
@@ -101,10 +101,10 @@ class _EditStationFormState extends State<EditStationForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _altController,
-                decoration: const InputDecoration(labelText: 'Station ALT'),
+                decoration: const InputDecoration(labelText: 'Station altitude'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a station alt.';
+                    return 'Veuillez saisir une altitude de station.';
                   }
                   return null;
                 },
@@ -112,10 +112,10 @@ class _EditStationFormState extends State<EditStationForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _lagController,
-                decoration: const InputDecoration(labelText: 'Station LAG'),
+                decoration: const InputDecoration(labelText: 'Station longitude'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a station lag.';
+                    return 'Veuillez saisir une longitude de station.';
                   }
                   return null;
                 },
@@ -127,7 +127,7 @@ class _EditStationFormState extends State<EditStationForm> {
                     _editStation();
                   }
                 },
-                child: const Text('Save Changes'),
+                child: const Text('Enregistrer les modifications'),
               ),
             ],
           ),
@@ -156,7 +156,7 @@ class _EditStationFormState extends State<EditStationForm> {
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Station "${station.name}" updated successfully!'),
+          content: Text('Station "${station.name}" Mis à jour avec succès!'),
         ),
 
       );
@@ -164,7 +164,7 @@ class _EditStationFormState extends State<EditStationForm> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to update station. Please try again.'),
+          content: Text('Échec de la mise à jour de la station. Veuillez réessayer'),
         ),
       );
     }

@@ -41,7 +41,7 @@ class _BusPageState extends State<BusPage> {
         _selectedBusId = -1;
       }
     } catch (error) {
-      print('Error loading buses: $error');
+      print('Erreur de chargement des bus: $error');
     }
   }
 
@@ -54,8 +54,8 @@ class _BusPageState extends State<BusPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Error"),
-            content: Text("Please select both arrival and departure times."),
+            title: Text("Erreur"),
+            content: Text("Veuillez sélectionner à la fois l'heure d'arrivée et de départ."),
             actions: [
               TextButton(
                 child: Text("OK"),
@@ -85,12 +85,12 @@ class _BusPageState extends State<BusPage> {
       );
       // Assuming you want to do something after successfully adding the schedule
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Bus schedule added successfully"),
+        content: Text("Horaire de bus ajouté avec succès"),
       ));
     } catch (error) {
       // Handle any errors here
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to add bus schedule"),
+        content: Text("Échec de l'ajout de l'horaire de bus"),
       ));
     } finally {
       setState(() {
@@ -104,7 +104,7 @@ class _BusPageState extends State<BusPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bus Schedules'),
+        title: Text('Horaires de bus'),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -128,7 +128,7 @@ class _BusPageState extends State<BusPage> {
            Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Arrival Time'),
+              Text('Heure darrivée'),
               TextField(
                 controller: _arrivaltime,
                 onTap: () async {
@@ -143,7 +143,7 @@ class _BusPageState extends State<BusPage> {
 
               ),
               SizedBox(height: 16.0),
-              Text('Departure Time'),
+              Text('Heure de départ'),
               TextField(
                 controller: _departuretime,
                 onTap: () async {
@@ -162,7 +162,7 @@ class _BusPageState extends State<BusPage> {
             onPressed: () {
               _addBusSchedule(_selectedBusId);
             },
-            child: Text('Add Schedule'),
+            child: Text('Ajouter un horaire'),
           ),
           Expanded(
             child: FutureBuilder<List<BusSchedule>>(
@@ -173,7 +173,7 @@ class _BusPageState extends State<BusPage> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No bus schedules available'));
+                  return Center(child: Text('Aucun horaire de bus disponible'));
                 } else {
                   List<BusSchedule> schedules = snapshot.data!;
                   return ListView.builder(
@@ -194,14 +194,14 @@ class _BusPageState extends State<BusPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Arrival Time: ${schedule.arrivalTime}',
+                                'Heure darrivée: ${schedule.arrivalTime}',
                                 style: TextStyle(
                                   color: Colors.green,
                                   fontSize: 16,
                                 ),
                               ),
                               Text(
-                                'Departure Time: ${schedule.departureTime}',
+                                'Heure de départ: ${schedule.departureTime}',
                                 style: TextStyle(
                                   color: Colors.red,
                                   fontSize: 16,
@@ -220,17 +220,17 @@ class _BusPageState extends State<BusPage> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text('Confirm Deletion'),
-                                        content: Text('Are you sure you want to delete this bus schedule?'),
+                                        title: Text('Confirmer la suppression'),
+                                        content: Text('Êtes-vous sûr de vouloir supprimer cet horaire de bus?'),
                                         actions: <Widget>[
                                           TextButton(
-                                            child: Text('Cancel'),
+                                            child: Text('Annuler'),
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
                                           ),
                                           TextButton(
-                                            child: Text('Delete'),
+                                            child: Text('Supprimer'),
                                             onPressed: () async {
                                               Navigator.of(context).pop(); // Close the dialog
                                               setState(() {

@@ -92,17 +92,17 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Location Services Disabled"),
-          content: Text("Please enable location services to use this feature."),
+          title: Text("Services de localisation désactivés"),
+          content: Text("Veuillez activer les services de localisation pour utiliser cette fonctionnalité."),
           actions: <Widget>[
             TextButton(
-              child: Text("Cancel"),
+              child: Text("Annuler"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Settings"),
+              child: Text("Paramétres"),
               onPressed: () {
                 AppSettings.openAppSettings(type: AppSettingsType.location);
                 Navigator.of(context).pop();
@@ -148,14 +148,14 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.all(40),
           children: [
             ListTile(
-              title: Text("Settings" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 24),),
+              title: Text("Paramétres" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 24),),
               leading: Icon(Icons.settings),
               onTap: () {
 
               },
             ),
             ListTile(
-              title: Text("Logout" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 24),),
+              title: Text("Déconnexion" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 24),),
               leading: Icon(Icons.logout),
               onTap: () {
                 Navigator.pushReplacementNamed(context, LoginPage.id);
@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       appBar: AppBar(
-        title: Text("User Interface"),
+        title: Text("Bus Tracker"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
