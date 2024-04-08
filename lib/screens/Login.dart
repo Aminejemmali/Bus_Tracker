@@ -55,19 +55,19 @@ class _LoginPageState extends State<LoginPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              'Welcome back',
+                              'Bienvenue de retour',
                               style: TextStyle(
                                   fontSize: 30.0, color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              'Please login',
+                              'Veuillez vous connecter',
                               style: TextStyle(
                                   fontSize: 30.0, color: Colors.black),
                             ),
                             Text(
-                              'to your account',
+                              'à votre compte',
                               style: TextStyle(
                                   fontSize: 30.0, color: Colors.black),
                             ),
@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
+                            return 'Veuillez saisir votre adresse e-mail';
                           }
                           return null;
                         },
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return 'Veuillez saisir votre mot de passe';
                           }
                           return null;
                         },
@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushNamed(context, RegisterPage.id);
                         },
                         child: const Text(
-                          'Don\'t have an account? Register',
+                          'Vous navez pas de compte ? Inscrivez-vous',
                           style:
                               TextStyle(fontSize: 16.0, color: Colors.black54),
                         ),

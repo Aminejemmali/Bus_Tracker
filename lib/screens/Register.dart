@@ -50,24 +50,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                         
                           Text(
-                            'Create an Account',
-                            style:
-                                TextStyle(fontSize: 30.0, color: Colors.black,
-                                fontWeight: FontWeight.bold,),
-                          ),
-                          Text(
-                            'Welcome,',
+                            'Bienvenue,',
                             style:
                                 TextStyle(fontSize: 20.0, color: Colors.black),
                           ),
                           Text(
-                            'please register',
+                            'veuillez vous inscrire',
                             style:
                                 TextStyle(fontSize: 20.0, color: Colors.black),
                           ),
                           Text(
-                            'to create an account',
+                            'pour créer un compte',
                             style:
                                 TextStyle(fontSize: 20.0, color: Colors.black),
                           ),
@@ -91,8 +86,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           });
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Name',
-                          labelText: 'Name',
+                          hintText: 'Nom',
+                          labelText: 'Nom',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -107,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: InputDecoration(
                           hintText: 'Email',
                           labelText: 'Email',
-                          errorText: _wrongEmail ? 'Invalid email' : null,
+                          errorText: _wrongEmail ? 'Email erronée' : null,
                           border: const OutlineInputBorder(),
                         ),
                       ),
@@ -120,10 +115,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: 'Password',
-                          labelText: 'Password',
+                          hintText: 'Mot de passe',
+                          labelText: 'Mot de passe',
                           errorText:
-                              _wrongPassword ? 'Incorrect password' : null,
+                              _wrongPassword ? 'Mot de passe Incorrecte ' : null,
                           border: const OutlineInputBorder(),
                         ),
                       ),
@@ -136,8 +131,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           });
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Confirm Password',
-                          labelText: 'Confirm Password',
+                          hintText: 'Confirmer mot de passe',
+                          labelText: 'Confirmer mot de passe',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -168,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.pushNamed(context, '/ForgotPassword');
                       },
                       child: const Text(
-                        'Forgot Password?',
+                        'Mot de passe oublié?',
                         style: TextStyle(fontSize: 16.0, color: Colors.black54),
                       ),
                     ),
@@ -177,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.pushNamed(context, '/LoginPage');
                       },
                       child: const Text(
-                        'Already have an account? Login',
+                        'Vous avez déjà un compte ? Connectez-vous',
                         style: TextStyle(fontSize: 16.0, color: Colors.black54),
                       ),
                     ),
@@ -215,10 +210,10 @@ class _RegisterPageState extends State<RegisterPage> {
         Navigator.pushNamed(context, HomeScreen.id);
       } else {
         // Failed registration, display error message
-        showToast('Invalid Information, please try again.');
+        showToast('Informations invalides, veuillez réessayer.');
       }
     } catch (e) {
-      showToast('An error occurred, please try again.');
+      showToast('Une erreur sest produite, veuillez réessayer');
     } finally {
       setState(() => _isLoading = false);
     }

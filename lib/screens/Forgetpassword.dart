@@ -36,7 +36,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   height: 140.0, // Adjust the height as needed
                 ),
                 Text(
-                  'Reset Your Password',
+                  'Réinitialisez votre mot de passe',
                   style: TextStyle(fontSize: 40.0,
                   fontWeight: FontWeight.bold,),
                 ),
@@ -47,7 +47,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
 
                     const Text(
-                      'Enter your email',
+                      'Entrez votre adresse e-mail',
                       style: TextStyle(fontSize: 30.0),
                     ),
                     const SizedBox(height: 20.0),
@@ -63,7 +63,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     if (showNewPasswordField) ...[
                       const SizedBox(height: 20.0),
                       const Text(
-                        'Enter your new password',
+                        'Entrez votre nouveau mot de passe',
                         style: TextStyle(fontSize: 30.0),
                       ),
                       const SizedBox(height: 20.0),
@@ -73,7 +73,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           newPassword = value;
                         },
                         decoration: const InputDecoration(
-                          hintText: 'New Password',
+                          hintText: 'Nouveau mot de passe',
                         ),
                       ),
                     ],
@@ -96,9 +96,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: const Text('Email Not Found ❌'),
+                          title: const Text('E-mail non trouvé ❌'),
                           content: const Text(
-                              'The entered email does not exist in our records.'),
+                              'Ladresse e-mail saisie nexiste pas dans nos dossiers.'),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -119,12 +119,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text(success
-                            ? 'Password Reset ✅'
-                            : 'Password Reset Failed ❌'),
+                            ? 'Réinitialisation du mot de passe ✅'
+                            : 'Échec de la réinitialisation du mot de passe ❌'),
                         content: success
-                            ? const Text('Password reset successfully.')
+                            ? const Text('Réinitialisation du mot de passe réussie.')
                             : const Text(
-                            'Password reset failed. Please try again.'),
+                            '"La réinitialisation du mot de passe a échoué. Veuillez réessayer.'),
                         actions: [
                           TextButton(
                             onPressed: () {
