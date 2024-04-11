@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bustrackerapp/models/ciruit.dart';
 import 'package:mysql_client/mysql_client.dart';
 import 'package:bustrackerapp/models/BusSchedule.dart';
 import 'package:bustrackerapp/models/Bus.dart';
@@ -14,7 +15,7 @@ import 'package:crypto/crypto.dart';
   static const _password = 'inesay1122//';
   static const _db = 'inesay';*/
 class DatabaseHelper {
-  static const _host = '192.168.171.204';
+  static const _host = '192.168.29.204';
   static const _port = 3307;
   static const _user = 'alluser';
   static const _password = 'alluser';
@@ -255,6 +256,14 @@ class DatabaseHelper {
       //await conn.close();
     }
   }
-
+  static Future<List<Circuit>> getCiruits() async {
+    final conn = await getConnection();
+    try {
+      final results = await conn.query('SELECT * FROM ciruit');
+      return results.map((e) => Circuit.fromJson(e.fields)).toList();
+    } finally {
+      // await conn.close();
+    }
+  }
 
 }

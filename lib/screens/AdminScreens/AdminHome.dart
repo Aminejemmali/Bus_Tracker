@@ -1,3 +1,4 @@
+import 'package:bustrackerapp/screens/AdminScreens/circuit.dart';
 import 'package:flutter/material.dart';
 import 'package:bustrackerapp/models/station.dart';
 import 'package:bustrackerapp/db_Functions/db_helper.dart';
@@ -83,109 +84,136 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: Theme.of(context).copyWith(
-        primaryColor: const Color(0xFFFFC25C),
-        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            backgroundColor: const Color(0xFFFFC25C),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
-        ),
-
-      ),
-      child: Scaffold(
-         appBar: AppBar(
-           automaticallyImplyLeading: false,
-          title: Text('Stations'),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            // Implement search functionality here
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.sort),
-          onPressed: () {
-            // Implement sorting functionality here
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.directions_bus), // Use an appropriate icon for buses
-          onPressed: () {
-            // Navigate to the buses page
-            Navigator.of(context).pushNamed('/BusesPage'); // Update '/buses' to your actual route name
-          },
-        ),
-      ],
-    ),
-
-    body: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : _stations.isEmpty
-            ? Center(
-          child: Text('No stations available. Add some!'),
-        )
-            : ListView.builder(
-          itemCount: _stations.length,
-          itemBuilder: (context, index) {
-            final station = _stations[index];
-            return Padding(
-              padding: EdgeInsets.all(8.0),
-              child:Card(
-              elevation: 5,
-              margin: const EdgeInsets.symmetric(
-                  horizontal: 10, vertical: 5),
-              child: ListTile(
-                title: Text(station.name),
-                subtitle: Text(station.address),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.bus_alert),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          BusPage.id,
-                          arguments: station.id,
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          EditStationForm.id,
-                          arguments: station.id,
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        deleteStation(station.id!);
-                      },
-                    ),
-                  ],
-                ),
+        data: Theme.of(context).copyWith(
+          primaryColor: const Color(0xFFFFC25C),
+          scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              backgroundColor: const Color(0xFFFFC25C),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
               ),
             ),
-            );
-          },
+          ),
+
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, AddStationForm.id);
-          },
-          child: Icon(Icons.add),
+        child: Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Text('Stations'),
+              actions: [
+                IconButton(
+
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    // Implement search functionality here
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.sort),
+                  onPressed: () {
+                    // Implement sorting functionality here
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.directions_bus),
+                  // Use an appropriate icon for buses
+                  onPressed: () {
+                    // Navigate to the buses page
+                    Navigator.of(context).pushNamed(
+                        '/BusesPage'); // Update '/buses' to your actual route name
+                  },
+                ),
+              ],
+            ),
+
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                SizedBox(height: 20,),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      CircuitPage.id
+                    );
+                  },
+                  icon: Icon(Icons.route),
+
+                  label: Text("Circuit"),
+
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(15),
+                    textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                    primary: Color(0xFFFFC25C), // Button color
+                    onPrimary: Colors.white, // Text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          10.0), // Rounded corners
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: _isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : _stations.isEmpty
+                      ? Center(
+                    child: Text('No stations available. Add some!'),
+                  )
+                      : ListView.builder(
+                    itemCount: _stations.length,
+                    itemBuilder: (context, index) {
+                      final station = _stations[index];
+                      return Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 5,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: ListTile(
+                            title: Text(station.name),
+                            subtitle: Text(station.address),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.bus_alert),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      BusPage.id,
+                                      arguments: station.id,
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      EditStationForm.id,
+                                      arguments: station.id,
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    deleteStation(station.id!);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
         ),
-      ),
     );
   }
 }

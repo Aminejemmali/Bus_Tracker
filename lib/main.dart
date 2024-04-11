@@ -1,6 +1,7 @@
 import 'package:bustrackerapp/screens/AdminScreens/AddBus.dart';
 import 'package:bustrackerapp/screens/AdminScreens/Buses.dart';
 import 'package:bustrackerapp/screens/AdminScreens/EditBus.dart';
+import 'package:bustrackerapp/screens/AdminScreens/circuit.dart';
 import 'package:flutter/material.dart';
 import 'package:bustrackerapp/screens/AdminScreens/AddStation.dart';
 import 'package:bustrackerapp/screens/AdminScreens/AdminHome.dart';
@@ -124,6 +125,7 @@ class Home extends StatelessWidget {
           ModalRoute.of(context)!.settings.arguments as int?;
           return EditBusForm(busId: busId);
         },
+        CircuitPage.id: (context) => CircuitPage(),
       },
     );
   }
