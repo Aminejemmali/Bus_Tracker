@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushNamed(context, RegisterPage.id);
                         },
                         child: const Text(
-                          'Vous navez pas de compte ? Inscrivez-vous',
+                          'Vous navez pas de compte ?',
                           style:
                               TextStyle(fontSize: 16.0, color: Colors.black54),
                         ),

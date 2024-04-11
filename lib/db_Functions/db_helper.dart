@@ -259,11 +259,33 @@ class DatabaseHelper {
   static Future<List<Circuit>> getCiruits() async {
     final conn = await getConnection();
     try {
-      final results = await conn.query('SELECT * FROM ciruit');
+      final results = await conn.query('SELECT * FROM circuit');
       return results.map((e) => Circuit.fromJson(e.fields)).toList();
     } finally {
       // await conn.close();
     }
   }
+  static Future<void> addCircuit(Circuit circuit) async {
+    final conn = await getConnection();
+    try {
+      await conn.query(
+        'INSERT INTO circuit (name) VALUES (?)',
+        [circuit.name],
+      );
+    } finally {
+      //await conn.close();
+    }
+  }
+   static Future<void> deleteCiruit(int? id) async {
+    final conn = await getConnection();
+    try {
+      await conn.query('DELETE FROM circuit WHERE id = ?', [id]);
+    } catch (e) {
+      print('Error deleting station: $e');
+    } finally {
+      //await conn.close();
+    }
+  }
+
 
 }

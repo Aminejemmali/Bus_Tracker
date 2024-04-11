@@ -1,4 +1,5 @@
 import 'package:bustrackerapp/screens/AdminScreens/AddBus.dart';
+import 'package:bustrackerapp/screens/AdminScreens/AddCircuit.dart';
 import 'package:bustrackerapp/screens/AdminScreens/Buses.dart';
 import 'package:bustrackerapp/screens/AdminScreens/EditBus.dart';
 import 'package:bustrackerapp/screens/AdminScreens/circuit.dart';
@@ -126,6 +127,7 @@ class Home extends StatelessWidget {
           return EditBusForm(busId: busId);
         },
         CircuitPage.id: (context) => CircuitPage(),
+         AddCircuit.id: (context) => AddCircuit(),
       },
     );
   }

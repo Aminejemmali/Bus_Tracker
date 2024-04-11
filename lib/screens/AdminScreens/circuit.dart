@@ -36,13 +36,13 @@ class _CircuitPageState extends State<CircuitPage> {
     }
   }
 
- /* Future<void> deletebus(int? id) async {
+  Future<void> deletcircuit(int? id) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmer la suppression'),
-          content: Text('Êtes-vous sûr de vouloir supprimer ce bus ?'),
+          content: Text('Êtes-vous sûr de vouloir supprimer ce circuit ?'),
           actions: <Widget>[
             TextButton(
               child: Text('Annuler'),
@@ -58,8 +58,8 @@ class _CircuitPageState extends State<CircuitPage> {
                   _isLoading = true;
                 });
                 try {
-                  await DatabaseHelper.deletebus(id);
-                  _loadBuses();
+                  await DatabaseHelper.deleteCiruit(id);
+                  _loadCiruits();
                 } catch (error) {
                   print(error);
                 } finally {
@@ -73,7 +73,7 @@ class _CircuitPageState extends State<CircuitPage> {
         );
       },
     );
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,9 @@ class _CircuitPageState extends State<CircuitPage> {
                     ),
                     IconButton(
                         icon: Icon(Icons.delete),
-                        onPressed: () => {}
+                        onPressed: () => {
+                           deletcircuit(circuit.id!)
+                        }
                     ),
                   ],
                 ),
@@ -117,7 +119,7 @@ class _CircuitPageState extends State<CircuitPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed('/AddBus');
+          Navigator.of(context).pushNamed('/AddCircuit');
         },
         child: Icon(Icons.add),
       ),
