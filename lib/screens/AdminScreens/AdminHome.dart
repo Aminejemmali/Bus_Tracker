@@ -47,17 +47,17 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Deletion'),
-          content: Text('Are you sure you want to delete this station?'),
+          title: Text('Confirmer la suppression'),
+          content: Text('Êtes-vous sûr de vouloir supprimer cette station ?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: Text('Annuler'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: Text('Supprimer'),
               onPressed: () async {
                 Navigator.of(context).pop();
                 setState(() {
@@ -159,7 +159,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       ? Center(child: CircularProgressIndicator())
                       : _stations.isEmpty
                       ? Center(
-                    child: Text('No stations available. Add some!'),
+                    child: Text('Aucune station disponible. Ajoutez-en quelques-unes!'),
                   )
                       : ListView.builder(
                     itemCount: _stations.length,

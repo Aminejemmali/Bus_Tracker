@@ -35,7 +35,7 @@ class _AddStationFormState extends State<AddStationForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Station')),
+      appBar: AppBar(title: const Text('Ajouter une station')),
       body: Form(
         key: _formKey,
 
@@ -45,10 +45,10 @@ class _AddStationFormState extends State<AddStationForm> {
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Station Name'),
+                decoration: const InputDecoration(labelText: 'Nom de la station'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a station name.';
+                    return 'Veuillez saisir un nom de station.';
                   }
                   return null;
                 },
@@ -56,10 +56,10 @@ class _AddStationFormState extends State<AddStationForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _addressController,
-                decoration: const InputDecoration(labelText: 'Station Address'),
+                decoration: const InputDecoration(labelText: 'Adresse de la station'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a station address.';
+                    return 'Veuillez saisir une adresse de station.';
                   }
                   return null;
                 },
@@ -67,10 +67,10 @@ class _AddStationFormState extends State<AddStationForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _locationController,
-                decoration: const InputDecoration(labelText: 'Location'),
+                decoration: const InputDecoration(labelText: 'Emplacement'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a location.';
+                    return 'Veuillez saisir un emplacement.';
                   }
                   return null;
                 },
@@ -78,10 +78,10 @@ class _AddStationFormState extends State<AddStationForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _altController,
-                decoration: const InputDecoration(labelText: 'ALT'),
+                decoration: const InputDecoration(labelText: 'Altitude'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a ALT.';
+                    return 'Veuillez saisir une altitude.';
                   }
                   return null;
                 },
@@ -89,10 +89,10 @@ class _AddStationFormState extends State<AddStationForm> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _lagController,
-                decoration: const InputDecoration(labelText: 'LAG'),
+                decoration: const InputDecoration(labelText: 'Longitude'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a LAG.';
+                    return 'Veuillez saisir une longitude.';
                   }
                   return null;
                 },
@@ -104,7 +104,7 @@ class _AddStationFormState extends State<AddStationForm> {
                     _addStation();
                   }
                 },
-                child: const Text('Add Station'),
+                child: const Text('Ajouter une station'),
               ),
             ],
           ),
@@ -125,7 +125,7 @@ class _AddStationFormState extends State<AddStationForm> {
       await DatabaseHelper.addStation(station);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Station "${station.name}" added successfully!'),
+          content: Text('Station "${station.name}"ajouté avec succès !'),
         ),
       );
 
@@ -133,7 +133,7 @@ class _AddStationFormState extends State<AddStationForm> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to add station. Please try again.'),
+          content: Text('Échec de lajout de la station. Veuillez réessayer.'),
         ),
       );
     }

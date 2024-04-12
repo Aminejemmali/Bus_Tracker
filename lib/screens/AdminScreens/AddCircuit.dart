@@ -29,7 +29,7 @@ class _AddCircuit extends State<AddCircuit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Circuit')),
+      appBar: AppBar(title: const Text('Ajouter un circuit')),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -39,10 +39,10 @@ class _AddCircuit extends State<AddCircuit> {
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Circuit Name'),
+                decoration: const InputDecoration(labelText: 'CNom du circuit'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a Circuit Name.';
+                    return 'Veuillez saisir un nom de circuit.';
                   }
                   return null;
                 },
@@ -67,7 +67,7 @@ class _AddCircuit extends State<AddCircuit> {
                     _addcircuit();
                   }
                 },
-                child: const Text('Add Circuit'),
+                child: const Text('Ajouter un circuit'),
               ),
             ],
           ),
@@ -83,7 +83,7 @@ class _AddCircuit extends State<AddCircuit> {
       await DatabaseHelper.addCircuit(circuit);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Ciruit "${circuit.name}" added successfully!'),
+          content: Text('Ciruit "${circuit.name}" ajouté avec succès !'),
         ),
       );
 
@@ -91,7 +91,7 @@ class _AddCircuit extends State<AddCircuit> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to add ciruit. Please try again.'),
+          content: Text('Échec de lajout de la station. Veuillez réessayer.'),
         ),
       );
     }

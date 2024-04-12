@@ -28,7 +28,7 @@ class _AddBus extends State<AddBus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Bus')),
+      appBar: AppBar(title: const Text('AJjouter Bus')),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -38,10 +38,10 @@ class _AddBus extends State<AddBus> {
             children: <Widget>[
               TextFormField(
                 controller: _numberController,
-                decoration: const InputDecoration(labelText: 'Bus Number'),
+                decoration: const InputDecoration(labelText: 'Matricule de Bus'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a Bus Registred Number.';
+                    return 'Veuillez saisir une matricule.';
                   }
                   return null;
                 },
@@ -49,10 +49,10 @@ class _AddBus extends State<AddBus> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _modelController,
-                decoration: const InputDecoration(labelText: 'Bus Model'),
+                decoration: const InputDecoration(labelText: 'Modele de bus'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a Bus Model.';
+                    return 'Veuillez saisir un modele.';
                   }
                   return null;
                 },
@@ -66,7 +66,7 @@ class _AddBus extends State<AddBus> {
                     _addbus();
                   }
                 },
-                child: const Text('Add Bus'),
+                child: const Text('Ajouter Bus'),
               ),
             ],
           ),
@@ -84,7 +84,7 @@ class _AddBus extends State<AddBus> {
       await DatabaseHelper.addbus(bus);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Bus "${bus.registrationNumber}" added successfully!'),
+          content: Text('Bus "${bus.registrationNumber}"ajouté avec succès !'),
         ),
       );
 
@@ -92,7 +92,7 @@ class _AddBus extends State<AddBus> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to add station. Please try again.'),
+          content: Text('"Échec de lajout de bus. Veuillez réessayer.'),
         ),
       );
     }
