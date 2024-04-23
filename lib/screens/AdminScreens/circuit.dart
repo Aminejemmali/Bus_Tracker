@@ -1,12 +1,9 @@
-import 'package:bustrackerapp/models/ciruit.dart';
-import 'package:bustrackerapp/screens/AdminScreens/EditBus.dart';
 import 'package:flutter/material.dart';
-import 'package:bustrackerapp/models/Bus.dart';
-import 'package:bustrackerapp/db_Functions/db_helper.dart'; // Update with your actual import path
-// Import your Bus edit and add pages
+import 'package:bustrackerapp/models/circuit.dart';  // Ensure this is the correct import path for your Circuit model
+import 'package:bustrackerapp/db_functions/db_helper.dart'; // Update with your actual import path
 
 class CircuitPage extends StatefulWidget {
-  static const String id = '/CiruitPage';
+  static const String id = '/CircuitPage';
 
   @override
   _CircuitPageState createState() => _CircuitPageState();
@@ -19,14 +16,14 @@ class _CircuitPageState extends State<CircuitPage> {
   @override
   void initState() {
     super.initState();
-    _loadCiruits();
+    _loadCircuits();
   }
 
-  Future<void> _loadCiruits() async {
+  Future<void> _loadCircuits() async {
     try {
-      final ciruits = await DatabaseHelper.getCiruits(); // Implement this method
+      final circuits = await DatabaseHelper.getCircuits();  // Make sure this method is correctly implemented in your DatabaseHelper
       setState(() {
-        _circuits = ciruits;
+        _circuits = circuits;
         _isLoading = false;
       });
     } catch (e) {
@@ -36,50 +33,11 @@ class _CircuitPageState extends State<CircuitPage> {
     }
   }
 
-  Future<void> deletcircuit(int? id) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirmer la suppression'),
-          content: Text('Êtes-vous sûr de vouloir supprimer ce circuit ?'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Annuler'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Supprimer'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                setState(() {
-                  _isLoading = true;
-                });
-                try {
-                  await DatabaseHelper.deleteCiruit(id);
-                  _loadCiruits();
-                } catch (error) {
-                  print(error);
-                } finally {
-                  setState(() {
-                    _isLoading = false;
-                  });
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ciruit disponibles'),
+        title: Text('Circuits disponibles'),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -89,26 +47,37 @@ class _CircuitPageState extends State<CircuitPage> {
           final circuit = _circuits[index];
           return Padding(
             padding: EdgeInsets.all(8.0),
-            child:Card(
+            child: Card(
               margin: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(circuit.name),
-                subtitle: Text('Id: ${circuit.id}'),
+                subtitle: FutureBuilder<List<int>>(
+                  future: DatabaseHelper.getStationIdsForCircuit(circuit.id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text('Loading...');
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      final stationIds = snapshot.data ?? [];
+                      return Text('Ids: ${stationIds.join(', ')}');
+                    }
+                  },
+                ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () {
-
-
+                        // Implement navigation to edit page
                       },
                     ),
                     IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () => {
-                           deletcircuit(circuit.id!)
-                        }
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        // Implement delete functionality
+                      },
                     ),
                   ],
                 ),
@@ -119,6 +88,7 @@ class _CircuitPageState extends State<CircuitPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // Implement navigation to add circuit page
           Navigator.of(context).pushNamed('/AddCircuit');
         },
         child: Icon(Icons.add),

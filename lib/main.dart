@@ -101,7 +101,7 @@ class Home extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: HomeScreen.id,
+      initialRoute: LoginPage.id,
       routes: {
         RegisterPage.id: (context) => const RegisterPage(),
         LoginPage.id: (context) => const LoginPage(),

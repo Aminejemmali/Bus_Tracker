@@ -127,7 +127,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 ),
               ],
             ),
-
+            drawer: Drawer(),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -144,10 +144,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   label: Text("Circuit"),
 
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(15),
-                    textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
-                    primary: Color(0xFFFFC25C), // Button color
-                    onPrimary: Colors.white, // Text color
+                    foregroundColor: Colors.white, backgroundColor: Color(0xFFFFC25C), padding: EdgeInsets.all(15),
+                    textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold), // Text color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                           10.0), // Rounded corners

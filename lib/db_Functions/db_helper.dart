@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:bustrackerapp/models/ciruit.dart';
+import 'package:bustrackerapp/models/circuit.dart';
 import 'package:mysql_client/mysql_client.dart';
 import 'package:bustrackerapp/models/BusSchedule.dart';
 import 'package:bustrackerapp/models/Bus.dart';
@@ -15,7 +15,7 @@ import 'package:crypto/crypto.dart';
   static const _password = 'inesay1122//';
   static const _db = 'inesay';*/
 class DatabaseHelper {
-  static const _host = '192.168.29.204';
+  static const _host = '192.168.1.81';
   static const _port = 3307;
   static const _user = 'alluser';
   static const _password = 'alluser';
@@ -256,7 +256,7 @@ class DatabaseHelper {
       //await conn.close();
     }
   }
-  static Future<List<Circuit>> getCiruits() async {
+  static Future<List<Circuit>> getCircuits() async {
     final conn = await getConnection();
     try {
       final results = await conn.query('SELECT * FROM circuit');
@@ -265,6 +265,8 @@ class DatabaseHelper {
       // await conn.close();
     }
   }
+
+ 
   static Future<void> addCircuit(Circuit circuit) async {
     final conn = await getConnection();
     try {
@@ -286,6 +288,18 @@ class DatabaseHelper {
       //await conn.close();
     }
   }
+
+
+  static Future<List<int>> getStationIdsForCircuit(int? id) async {
+  final conn = await getConnection();
+  try {
+    final results = await conn.query('SELECT station_id FROM circuitstations WHERE circuit_id = ?', [id]);
+    return results.map((e) => e.fields['station_id'] as int).toList();
+  } finally {
+    // await conn.close(); // Make sure to close the connection
+  }
+}
+
 
 
 }
