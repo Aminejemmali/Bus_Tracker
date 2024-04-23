@@ -15,7 +15,7 @@ import 'package:crypto/crypto.dart';
   static const _password = 'inesay1122//';
   static const _db = 'inesay';*/
 class DatabaseHelper {
-  static const _host = '192.168.1.81';
+  static const _host = '192.168.29.204';
   static const _port = 3307;
   static const _user = 'alluser';
   static const _password = 'alluser';
@@ -266,26 +266,38 @@ class DatabaseHelper {
     }
   }
 
- 
-  static Future<void> addCircuit(Circuit circuit) async {
+
+
+  static Future<int> addCircuit(Circuit circuit) async {
     final conn = await getConnection();
     try {
       await conn.query(
         'INSERT INTO circuit (name) VALUES (?)',
         [circuit.name],
       );
+      final result = await conn.query('SELECT LAST_INSERT_ID() as id');
+      final insertedId = result.first.fields['id'] as int;
+      return insertedId;
     } finally {
-      //await conn.close();
+
     }
   }
-   static Future<void> deleteCiruit(int? id) async {
+
+
+  static Future<void> deleteCircuit(int? id) async {
     final conn = await getConnection();
     try {
-      await conn.query('DELETE FROM circuit WHERE id = ?', [id]);
+      // Start a transaction to ensure both operations complete successfully
+      await conn.transaction((transaction) async {
+        // First, delete entries in the circuitstations table
+        await transaction.query('DELETE FROM circuitstations WHERE circuit_id = ?', [id]);
+        // Next, delete the circuit itself
+        await transaction.query('DELETE FROM circuit WHERE id = ?', [id]);
+      });
     } catch (e) {
-      print('Error deleting station: $e');
+      print('Error deleting circuit and related stations: $e');
     } finally {
-      //await conn.close();
+
     }
   }
 
@@ -300,6 +312,36 @@ class DatabaseHelper {
   }
 }
 
+  static Future<void> addCircuitStation(int circuitId, List<int> stationIds) async {
+    final conn = await getConnection();
+    try {
+      for (final stationId in stationIds) {
+        await conn.query('INSERT INTO circuitstations (circuit_id, station_id) VALUES (?, ?)', [circuitId, stationId]);
+      }
+    } finally {
+      // await conn.close();
+    }
+  }
+
+// Assuming your DatabaseHelper has a method like this to fetch station names
+  static Future<List<String>> getStationNamesForCircuit(int circuitId) async {
+    final conn = await getConnection();
+    List<String> stationNames = [];
+    try {
+      final result = await conn.query(
+          'SELECT stations.name FROM stations '
+              'JOIN circuitstations ON stations.station_id = circuitstations.station_id '
+              'WHERE circuitstations.circuit_id = ?',
+          [circuitId]
+      );
+      for (var row in result) {
+        stationNames.add(row[0] as String);
+      }
+    } finally {
+
+    }
+    return stationNames;
+  }
 
 
 }

@@ -51,16 +51,16 @@ class _CircuitPageState extends State<CircuitPage> {
               margin: const EdgeInsets.all(8.0),
               child: ListTile(
                 title: Text(circuit.name),
-                subtitle: FutureBuilder<List<int>>(
-                  future: DatabaseHelper.getStationIdsForCircuit(circuit.id),
+                subtitle: FutureBuilder<List<String>>(
+                  future: DatabaseHelper.getStationNamesForCircuit(circuit.id!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Text('Loading...');
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
-                      final stationIds = snapshot.data ?? [];
-                      return Text('Ids: ${stationIds.join(', ')}');
+                      final stationNames = snapshot.data ?? [];
+                      return Text('Stations: ${stationNames.join(', ')}');
                     }
                   },
                 ),
@@ -75,8 +75,47 @@ class _CircuitPageState extends State<CircuitPage> {
                     ),
                     IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () {
-                        // Implement delete functionality
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Confirm Delete"),
+                              content: Text("Are you sure you want to delete this circuit?"),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text("Cancel"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text("Delete"),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                    try {
+                                      await DatabaseHelper.deleteCircuit(circuit.id);
+                                      setState(() {
+                                        _circuits.removeAt(index);
+                                      });
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Circuit deleted successfully.'),
+                                        ),
+                                      );
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Failed to delete the circuit.'),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
                   ],
@@ -88,11 +127,9 @@ class _CircuitPageState extends State<CircuitPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Implement navigation to add circuit page
           Navigator.of(context).pushNamed('/AddCircuit');
         },
         child: Icon(Icons.add),
       ),
     );
-  }
-}
+  }}

@@ -127,7 +127,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 ),
               ],
             ),
-            drawer: Drawer(),
+            drawer: const Drawer(),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
