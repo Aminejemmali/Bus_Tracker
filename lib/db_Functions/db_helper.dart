@@ -15,7 +15,7 @@ import 'package:crypto/crypto.dart';
   static const _password = 'inesay1122//';
   static const _db = 'inesay';*/
 class DatabaseHelper {
-  static const _host = '192.168.50.97';
+  static const _host = '192.168.29.204';
   static const _port = 3307;
   static const _user = 'alluser';
   static const _password = 'alluser';
@@ -171,8 +171,8 @@ class DatabaseHelper {
     final conn = await getConnection();
     try {
       await conn.query(
-        'INSERT INTO bus_schedules (station_id, bus_id, arrival_time, departure_time) VALUES (?, ?, ?, ?)',
-        [schedule.stationId, schedule.busId, schedule.arrivalTime, schedule.departureTime],
+        'INSERT INTO bus_schedules (station_id, bus_id, arrival_time, departure_time  , circuit_id) VALUES (?,?, ?, ?, ?)',
+        [schedule.stationId, schedule.busId, schedule.arrivalTime, schedule.departureTime,schedule.circuitId],
       );
     } finally {
       //await conn.close();
@@ -266,6 +266,7 @@ class DatabaseHelper {
       //await conn.close();
     }
   }
+
   static Future<List<Circuit>> getCircuits() async {
     final conn = await getConnection();
     try {
@@ -275,8 +276,6 @@ class DatabaseHelper {
       // await conn.close();
     }
   }
-
-
 
   static Future<int> addCircuit(Circuit circuit) async {
     final conn = await getConnection();

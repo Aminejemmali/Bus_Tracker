@@ -4,17 +4,14 @@ class Circuit {
 
 
   Circuit({
-   
     this.id,
     required this.name,
-
   });
 
   factory Circuit.fromJson(Map<String, dynamic> json) {
     return Circuit(
       id: json['id'] as int?,
       name: json['name'] as String,
-
     );
   }
 
