@@ -15,7 +15,7 @@ import 'package:crypto/crypto.dart';
   static const _password = 'inesay1122//';
   static const _db = 'inesay';*/
 class DatabaseHelper {
-  static const _host = '192.168.29.204';
+  static const _host = '192.168.50.97';
   static const _port = 3307;
   static const _user = 'alluser';
   static const _password = 'alluser';
@@ -148,14 +148,24 @@ class DatabaseHelper {
 }
   static Future<void> deleteStation(int? id) async {
     final conn = await getConnection();
-    try {
-      await conn.query('DELETE FROM stations WHERE station_id = ?', [id]);
-    } catch (e) {
-      print('Error deleting station: $e');
-    } finally {
-      //await conn.close();
-    }
+    await conn.transaction((txn) async {
+      // Delete any references to the station from the bus_schedules table
+      await txn.query('DELETE FROM bus_schedules WHERE station_id = ?', [id]);
+
+      // Delete any references to the station from the circuitstations table
+      await txn.query('DELETE FROM circuitstations WHERE station_id = ?', [id]);
+
+      // Delete the station from the stations table
+      await txn.query('DELETE FROM stations WHERE station_id = ?', [id]);
+    }).catchError((e) {
+      print('Transaction failed: $e');
+      // Handle error, potentially rethrow
+    }).whenComplete(() => {
+      // Close the connection if necessary
+      // await conn.close();
+    });
   }
+
 
   static Future<void> addBusSchedule(BusSchedule schedule) async {
     final conn = await getConnection();
