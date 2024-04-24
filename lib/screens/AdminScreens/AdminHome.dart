@@ -1,4 +1,5 @@
 import 'package:bustrackerapp/screens/AdminScreens/circuit.dart';
+import 'package:bustrackerapp/screens/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:bustrackerapp/models/station.dart';
 import 'package:bustrackerapp/db_Functions/db_helper.dart';
@@ -80,7 +81,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       },
     );
   }
-  @override
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
@@ -122,25 +122,42 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             ),
           ],
         ),
-        drawer: const Drawer(),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFC25C),
+                ),
+                child: Text(
+                  'Menu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.route),
+                title: Text('Circuit'),
+                onTap: () {
+                  Navigator.pushNamed(context, CircuitPage.id);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Logout'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, LoginPage.id);
+                },
+              ),
+            ],
+          ),
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             SizedBox(height: 20,),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pushNamed(context, CircuitPage.id);
-              },
-              icon: Icon(Icons.route),
-              label: Text("Circuit"),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: Color(0xFFFFC25C), padding: EdgeInsets.all(15),
-                textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-            ),
             Expanded(
               child: _isLoading
                   ? Center(child: CircularProgressIndicator())
@@ -201,11 +218,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, AddStationForm.id); // Update this route to the correct one for adding stations
+            Navigator.pushNamed(context, AddStationForm.id);
           },
           child: Icon(Icons.add),
           backgroundColor: Color(0xFFFFC25C),
         ),
       ),
     );
-  }}
+  }
+}
