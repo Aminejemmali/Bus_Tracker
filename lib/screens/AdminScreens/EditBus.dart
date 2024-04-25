@@ -4,6 +4,7 @@ import 'package:bustrackerapp/models/station.dart';
 import 'package:bustrackerapp/screens/AdminScreens/AdminHome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:validators/sanitizers.dart';
 
 class EditBusForm extends StatefulWidget {
   static const String id = '/EditBusForm';
@@ -19,7 +20,8 @@ class _EditBusFormState extends State<EditBusForm> {
   final _formKey = GlobalKey<FormState>();
   final _numberController = TextEditingController();
   final _modelController = TextEditingController();
-
+  final _altController = TextEditingController();
+  final _lagController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -30,6 +32,8 @@ class _EditBusFormState extends State<EditBusForm> {
   void dispose() {
     _numberController.dispose();
     _modelController.dispose();
+    _altController.dispose();
+    _lagController.dispose();
     super.dispose();
   }
 
@@ -39,6 +43,9 @@ class _EditBusFormState extends State<EditBusForm> {
       if (station != null) {
         _numberController.text = station.registrationNumber;
         _modelController.text = station.model;
+        _altController.text= station.Alt.toString();
+        _lagController.text=station.Lag.toString();
+
 
       } else {
         print('Bus non trouvé pour lID: ${widget.busId}');
@@ -81,6 +88,28 @@ class _EditBusFormState extends State<EditBusForm> {
                 },
               ),
               const SizedBox(height: 10.0),
+              TextFormField(
+                controller: _altController,
+                decoration: const InputDecoration(labelText: 'Altitude'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez saisir une altitude.';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
+              TextFormField(
+                controller: _lagController,
+                decoration: const InputDecoration(labelText: 'Longitude'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez saisir une longitude.';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
 
               const SizedBox(height: 20.0),
               ElevatedButton(
@@ -103,6 +132,8 @@ class _EditBusFormState extends State<EditBusForm> {
       id: widget.busId,
       registrationNumber: _numberController.text,
       model: _modelController.text,
+      Alt: toFloat(_altController.text),
+      Lag: toFloat(_lagController.text),
 
     );
     try {
@@ -110,6 +141,8 @@ class _EditBusFormState extends State<EditBusForm> {
         bus.id!,
         bus.registrationNumber,
         bus.model,
+        bus.Alt,
+        bus.Lag
 
       );
       ScaffoldMessenger.of(context).showSnackBar(

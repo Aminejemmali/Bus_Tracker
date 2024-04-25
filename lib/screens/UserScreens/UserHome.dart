@@ -1,4 +1,5 @@
 import 'package:bustrackerapp/db_Functions/db_helper.dart';
+import 'package:bustrackerapp/models/Bus.dart';
 import 'package:bustrackerapp/models/station.dart';
 import 'package:bustrackerapp/screens/Login.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +14,20 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
 class MarkerData {
   final LatLng location;
   final String name;
+  final String type;
 
-  MarkerData(this.location, this.name);
+  MarkerData(this.location, this.name, this.type);
 }
+
 class _HomeScreenState extends State<HomeScreen> {
   List<Station> _stations = [];
-  List<MarkerData> _markers = [];
+  List<Bus> _buses = [];
+  List<MarkerData> _Stationsmarkers = [];
+  List<MarkerData> _Busesmarkers = [];
   bool _isLoading = false;
   Position? _currentPosition;
   double _currentZoom = 13.0;
@@ -39,14 +45,15 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final List<Station> stations = await DatabaseHelper.getStations();
       final List<MarkerData> marks = stations.map((station) {
-        return MarkerData(LatLng(station.Alt, station.Lag), station.name);
+        return MarkerData(
+            LatLng(station.Alt, station.Lag), station.name, 'station');
       }).toList();
 
       setState(() {
         _stations =
             stations; // Assuming you want to keep a list of Station objects
-        _markers.clear(); // Clear existing markers
-        _markers.addAll(marks); // Add new markers from stations
+        _Stationsmarkers.clear(); // Clear existing markers
+        _Stationsmarkers.addAll(marks); // Add new markers from stations
         _isLoading = false;
       });
     } catch (error) {
@@ -57,12 +64,38 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> loadBuses() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final List<Bus> buses = await DatabaseHelper.getBuses();
+      final List<MarkerData> marks = buses.map((bus) {
+        return MarkerData(
+            LatLng(bus.Alt, bus.Lag), bus.registrationNumber, 'bus');
+      }).toList();
+
+      setState(() {
+        _buses = buses; // Assuming you want to keep a list of Bus objects
+        _Busesmarkers.clear(); // Clear existing markers
+        _Busesmarkers.addAll(marks); // Add new markers from buses
+        _isLoading = false;
+      });
+    } catch (error) {
+      print(error);
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _requestLocationPermission();
     loadStations();
+    loadBuses();
   }
 
   Future<void> _requestLocationPermission() async {
@@ -93,7 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Services de localisation désactivés"),
-          content: Text("Veuillez activer les services de localisation pour utiliser cette fonctionnalité."),
+          content: Text(
+              "Veuillez activer les services de localisation pour utiliser cette fonctionnalité."),
           actions: <Widget>[
             TextButton(
               child: Text("Annuler"),
@@ -113,7 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-
 
   Future<void> _determinePosition() async {
     try {
@@ -148,20 +181,23 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.all(40),
           children: [
             ListTile(
-              title: Text("Paramétres" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 24),),
+              title: Text(
+                "Paramétres",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
               leading: Icon(Icons.settings),
-              onTap: () {
-
-              },
+              onTap: () {},
             ),
             ListTile(
-              title: Text("Déconnexion" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 24),),
+              title: Text(
+                "Déconnexion",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
               leading: Icon(Icons.logout),
               onTap: () {
                 Navigator.pushReplacementNamed(context, LoginPage.id);
               },
             ),
-
           ],
         ),
       ),
@@ -172,12 +208,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.refresh),
             onPressed: () {
               loadStations();
-              _determinePosition();// Refresh the stations when the button is pressed
+              _determinePosition(); // Refresh the stations when the button is pressed
             },
           ),
         ],
       ),
-
       body: _isLoading
           ? Center(
         child: CircularProgressIndicator(), // Show loading indicator
@@ -205,41 +240,59 @@ class _HomeScreenState extends State<HomeScreen> {
                   point: LatLng(
                       _currentPosition!.latitude, _currentPosition!.longitude),
                   child: Icon(Icons.location_pin, color: Colors.red),
-
                 ),
-              // Add additional markers with green color
-              for (final markerData in _markers)
+              // Add additional markers with green color for stations
+              for (final stationMarker in _Stationsmarkers)
                 Marker(
-
-                  width: 80.0, // Adjust width and height as needed
+                  width: 80.0,
                   height: 80.0,
-                  point: markerData.location,
+                  point: stationMarker.location,
                   child: Column(
-
                     children: [
                       Container(
                         child: Text(
-                          markerData.name,
+                          stationMarker.name,
                           style: TextStyle(fontSize: 12.0, color: Colors.black),
                           textAlign: TextAlign.center,
                         ),
                         color: Colors.yellow,
                         padding: EdgeInsets.all(4.0),
-
                       ),
                       Icon(
                         Icons.location_on,
                         color: Colors.lightGreen,
                         size: 30.0,
-
                       ),
-
                     ],
-                  )
+                  ),
+                ),
+              // Add additional markers with blue color for buses
+              for (final busMarker in _Busesmarkers)
+                Marker(
+                  width: 80.0,
+                  height: 80.0,
+                  point: busMarker.location,
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Text(
+                          busMarker.name,
+                          style: TextStyle(fontSize: 12.0, color: Colors.black),
+                          textAlign: TextAlign.center,
+                        ),
+                        color: Colors.yellow,
+                        padding: EdgeInsets.all(4.0),
+                      ),
+                      Icon(
+                        Icons.directions_bus,
+                        color: Colors.blue,
+                        size: 30.0,
+                      ),
+                    ],
+                  ),
                 ),
             ],
           ),
-          // ... other map elements (optional)
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -269,23 +322,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-void _showMarkerInfoDialog(BuildContext context, MarkerData markerData) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Station Information"),
-        content: Text("Name: ${markerData.name}\nLatitude: ${markerData.location.latitude.toStringAsFixed(4)}\nLongitude: ${markerData.location.longitude.toStringAsFixed(4)}"),
-        actions: <Widget>[
-          TextButton(
-            child: Text("OK"),
-            onPressed: () {
-              Navigator.of(context).pop(); // Dismiss the dialog
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-

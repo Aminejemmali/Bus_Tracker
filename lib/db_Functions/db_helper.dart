@@ -226,8 +226,8 @@ class DatabaseHelper {
     final conn = await getConnection();
     try {
       await conn.query(
-        'INSERT INTO buses (registration_number, model) VALUES (?, ?)',
-        [bus.registrationNumber, bus.model],
+        'INSERT INTO buses (registration_number, model , alt, lag) VALUES (?, ? ,?,?)',
+        [bus.registrationNumber, bus.model,bus.Alt,bus.Lag],
       );
     } finally {
       //await conn.close();
@@ -256,12 +256,12 @@ class DatabaseHelper {
     return null;
   }
 
-  static Future<void> editBus(int id, String newNumber,String newModel) async {
+  static Future<void> editBus(int id, String newNumber,String newModel , double NewAlt , double NewLag) async {
     final conn = await getConnection();
     try {
       await conn.query(
-          'UPDATE buses SET registration_number = ?,model=?  WHERE bus_id = ?',
-          [newNumber, newModel, id]);
+          'UPDATE buses SET registration_number = ?,model=? ,alt=? , lag=?  WHERE bus_id = ?',
+          [newNumber, newModel, NewAlt , NewLag, id ]);
     } finally {
       //await conn.close();
     }

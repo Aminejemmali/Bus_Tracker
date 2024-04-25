@@ -1,7 +1,8 @@
 import 'package:bustrackerapp/models/Bus.dart';
 import 'package:bustrackerapp/screens/AdminScreens/AdminHome.dart';
-import 'package:flutter/material.dart';// Import your Station model
-import 'package:bustrackerapp/db_Functions/db_helper.dart'; // Import your DatabaseHelper
+import 'package:flutter/material.dart'; // Import your Station model
+import 'package:bustrackerapp/db_Functions/db_helper.dart';
+import 'package:validators/sanitizers.dart'; // Import your DatabaseHelper
 
 class AddBus extends StatefulWidget {
   const AddBus({Key? key}) : super(key: key);
@@ -15,13 +16,15 @@ class _AddBus extends State<AddBus> {
   final _formKey = GlobalKey<FormState>();
   final _numberController = TextEditingController();
   final _modelController = TextEditingController();
-
+  final _altController = TextEditingController();
+  final _lagController = TextEditingController();
 
   @override
   void dispose() {
     _numberController.dispose();
     _modelController.dispose();
-
+    _altController.dispose();
+    _lagController.dispose();
     super.dispose();
   }
 
@@ -38,7 +41,8 @@ class _AddBus extends State<AddBus> {
             children: <Widget>[
               TextFormField(
                 controller: _numberController,
-                decoration: const InputDecoration(labelText: 'Matricule de Bus'),
+                decoration:
+                    const InputDecoration(labelText: 'Matricule de Bus'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez saisir une matricule.';
@@ -58,7 +62,28 @@ class _AddBus extends State<AddBus> {
                 },
               ),
               const SizedBox(height: 10.0),
-
+              TextFormField(
+                controller: _altController,
+                decoration: const InputDecoration(labelText: 'Altitude'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez saisir une altitude.';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
+              TextFormField(
+                controller: _lagController,
+                decoration: const InputDecoration(labelText: 'Longitude'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez saisir une longitude.';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
@@ -76,9 +101,12 @@ class _AddBus extends State<AddBus> {
   }
 
   void _addbus() async {
-    final bus =Bus(id: 0,
-        registrationNumber: _numberController.text,
-        model: _modelController.text
+    final bus = Bus(
+      id: 0,
+      registrationNumber: _numberController.text,
+      model: _modelController.text,
+      Alt: toFloat(_altController.text),
+      Lag: toFloat(_lagController.text),
     );
     try {
       await DatabaseHelper.addbus(bus);
@@ -88,7 +116,8 @@ class _AddBus extends State<AddBus> {
         ),
       );
 
-      Navigator.pushNamed(context, AdminHomeScreen.id);// Assuming you want to dismiss the form
+      Navigator.pushNamed(
+          context, AdminHomeScreen.id); // Assuming you want to dismiss the form
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
