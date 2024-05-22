@@ -46,6 +46,7 @@ dependencies:
   geolocator: ^11.0.0
   mysql_client: ^0.0.27
   app_settings: ^5.1.1
+  flutter_local_notifications: ^17.1.2
   
 
 dev_dependencies:

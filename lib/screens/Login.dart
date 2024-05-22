@@ -191,11 +191,11 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final user = await DatabaseHelper.login(_email, _password);
       if (user != null) {
-        if (user.role == 0) {
-          // Regular user, navigate to user home screen
+        if (user.role == 0) { // role user
+          // Regular user, navigate to user home screen mte3 el user
           Navigator.pushReplacementNamed(context, HomeScreen.id);
-        } else if (user.role == 1) {
-          // Admin user, navigate to admin home screen
+        } else if (user.role == 1) { // role admin
+          // Admin user, navigate to admin home screen mte3 admin
           Navigator.pushReplacementNamed(context, AdminHomeScreen.id);
         } else {
           // Invalid role, display error message

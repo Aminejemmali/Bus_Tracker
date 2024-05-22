@@ -67,12 +67,7 @@ class _CircuitPageState extends State<CircuitPage> {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        // Implement navigation to edit page
-                      },
-                    ),
+                    
                     IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () async {

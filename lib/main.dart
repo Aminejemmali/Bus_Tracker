@@ -3,6 +3,7 @@ import 'package:bustrackerapp/screens/AdminScreens/AddCircuit.dart';
 import 'package:bustrackerapp/screens/AdminScreens/Buses.dart';
 import 'package:bustrackerapp/screens/AdminScreens/EditBus.dart';
 import 'package:bustrackerapp/screens/AdminScreens/circuit.dart';
+import 'package:bustrackerapp/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bustrackerapp/screens/AdminScreens/AddStation.dart';
 import 'package:bustrackerapp/screens/AdminScreens/AdminHome.dart';
@@ -13,8 +14,11 @@ import 'package:bustrackerapp/screens/Login.dart';
 import 'package:bustrackerapp/screens/Register.dart';
 import 'package:bustrackerapp/screens/UserScreens/UserHome.dart';
 
-void main() => runApp(const Home());
-
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().init();
+  runApp(Home());
+}
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -101,7 +105,7 @@ class Home extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: HomeScreen.id,
+      initialRoute: AdminHomeScreen.id,
       routes: {
         RegisterPage.id: (context) => const RegisterPage(),
         LoginPage.id: (context) => const LoginPage(),

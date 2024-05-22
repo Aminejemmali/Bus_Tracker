@@ -5,6 +5,7 @@ class BusSchedule {
   final int circuitId;
   final String arrivalTime;
   final String departureTime;
+  final int	 Isdelayed;
 
   BusSchedule({
     this.id,
@@ -13,6 +14,7 @@ class BusSchedule {
     required this.circuitId,
     required this.arrivalTime,
     required this.departureTime,
+    required this.Isdelayed,
   });
 
   factory BusSchedule.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class BusSchedule {
       circuitId: json['circuit_id'],
       arrivalTime: json['arrival_time'],
       departureTime: json['departure_time'],
+      Isdelayed: json['Isdelayed'],
     );
   }
 
@@ -34,6 +37,7 @@ class BusSchedule {
       'circuit_id': circuitId,
       'arrival_time': arrivalTime,
       'departure_time': departureTime,
+      'Isdelayed':Isdelayed,
     };
   }
 }

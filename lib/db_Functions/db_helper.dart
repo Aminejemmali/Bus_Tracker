@@ -8,30 +8,48 @@ import 'package:bustrackerapp/models/user.dart';
 import 'package:bustrackerapp/models/station.dart';
 import 'package:crypto/crypto.dart';
 
-/*class DatabaseHelper {
-  static const _host = 'inesay.marwagh.com';
-   static const _port = 443;
-  static const _user = 'inesay';
-  static const _password = 'inesay1122//';
-  static const _db = 'inesay';*/
+
 class DatabaseHelper {
-  static const _host = '192.168.29.204';
-  static const _port = 3307;
-  static const _user = 'alluser';
-  static const _password = 'alluser';
+  static const _host = '51.210.105.174';
+  static const _port = 3306;
+  // static const _user = 'alluser';
+  static const _user = 'inesay';
+  // static const _password = 'alluser';
+  static const _password = 'inesay1122//';
   static const _db = 'bustracker';
+
 
   static MySqlConnection? _connection;
 
   static Future<MySqlConnection> getConnection() async {
-    _connection ??= await MySqlConnection.connect(ConnectionSettings(
-      host: _host,
-      port: _port,
-      user: _user,
-      password: _password,
-      db: _db,
-    ));
+    try {
+      _connection??= await MySqlConnection.connect(ConnectionSettings(
+        host: _host,
+        port: _port,
+        user: _user,
+        password: _password,
+        db: _db,
+      ));
+      print('Connected to database');
+    } on MySqlException catch (e) {
+      print('Error connecting to the database: $e');
+      rethrow; // rethrow the exception after logging
+    }
     return _connection!;
+  }
+
+  static Future<void> closeConnection() async {
+    if (_connection!= null) {
+      await _connection!.close(); // Close the connection
+      _connection = null; // Set the connection to null
+      print('Database connection closed');
+    }
+  }
+
+// A method to reconnect if needed
+  static Future<void> reconnect() async {
+    await closeConnection();
+    await getConnection();
   }
 
   static Future<User?> login(String email, String password) async {

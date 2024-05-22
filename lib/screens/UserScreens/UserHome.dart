@@ -208,6 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.refresh),
             onPressed: () {
               loadStations();
+              loadBuses();
               _determinePosition(); // Refresh the stations when the button is pressed
             },
           ),

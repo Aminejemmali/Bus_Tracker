@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:bustrackerapp/db_Functions/db_helper.dart';
+import 'package:bustrackerapp/db_functions/db_helper.dart';
 import 'package:bustrackerapp/models/BusSchedule.dart';
 import 'package:bustrackerapp/models/Bus.dart';
 import 'package:bustrackerapp/models/circuit.dart'; // Import Circuit model
+import 'package:bustrackerapp/services/notification_service.dart'; // Import NotificationService
 
 class BusPage extends StatefulWidget {
   static const String id = '/BusPage';
@@ -65,6 +66,7 @@ class _BusPageState extends State<BusPage> {
       print('Error loading circuits: $error');
     }
   }
+
   Future<void> _addBusSchedule(int selectedBusId) async {
     if (_arrivaltime.text.isEmpty || _departuretime.text.isEmpty) {
       showDialog(
@@ -72,7 +74,8 @@ class _BusPageState extends State<BusPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Erreur"),
-            content: Text("Veuillez sélectionner à la fois l'heure d'arrivée et de départ."),
+            content: Text(
+                "Veuillez sélectionner à la fois l'heure d'arrivée et de départ."),
             actions: [
               TextButton(
                 child: Text("OK"),
@@ -121,6 +124,7 @@ class _BusPageState extends State<BusPage> {
           circuitId: _selectedCircuitId,
           arrivalTime: _arrivaltime.text,
           departureTime: _departuretime.text,
+          Isdelayed: 0,
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -137,126 +141,148 @@ class _BusPageState extends State<BusPage> {
     }
   }
 
+  Future<void> showDelayedNotification(BusSchedule schedule) async {
+    await NotificationService().showNotification(
+      schedule.id!,
+      'Bus Schedule Delayed',
+      'Bus ${schedule.busId} on Circuit ${schedule.circuitId} is delayed.',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Text('Horaires de bus'),
-    ),
-    body: _isLoading
-    ? Center(child: CircularProgressIndicator())
-        : Column(
-    children: [
-    DropdownButton<int>(
-    value: _selectedBusId,
-    onChanged: (int? value) {
-    setState(() {
-    _selectedBusId = value!;
-    });
-    },
-    items: _buses.map((bus) {
-    return DropdownMenuItem<int>(
-    value: bus.id!,
-    child: Text(bus.registrationNumber),
-    );
-    }).toList(),
-    ),
-    DropdownButton<int>(
-    value: _selectedCircuitId,
-    onChanged: (int? value) {
-    setState(() {
-    _selectedCircuitId = value!;
-    });
-    },
-    items: _circuits.map((circuit) {
-    return DropdownMenuItem<int>(
-    value: circuit.id!,
-    child: Text(circuit.name), // Assuming 'name' is a property of Circuit
-    );
-    }).toList(),
-    ),
-    Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Text('Heure darrivée'),
-    TextField(
-    controller: _arrivaltime,
-    onTap: () async {
-    TimeOfDay? selectedTime = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
-    );
-    if (selectedTime != null) {
-    _arrivaltime.text = selectedTime.format(context);
-    }
-    },
-    ),
-    SizedBox(height: 16.0),
-    Text('Heure de départ'),
-    TextField(
-    controller: _departuretime,
-    onTap: () async {
-    TimeOfDay? selectedTime = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
-    );
-    if (selectedTime != null) {
-    _departuretime.text = selectedTime.format(context);
-    }
-    },
-    ),
-    ],
-    ),
-    ElevatedButton(
-    onPressed: () {
-    _addBusSchedule(_selectedBusId);
-    },
-    child: Text('Ajouter un horaire'),
-    ),
-    Expanded(
-    child: FutureBuilder<List<BusSchedule>>(
-    future: DatabaseHelper.getBusSchedulesForStation(widget.stationId!),
-    builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-    return Center(child: CircularProgressIndicator());
-    } else if (snapshot.hasError) {
-    return Center(child: Text('Error: ${snapshot.error}'));
-    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-    return Center(child: Text('Aucun horaire de bus disponible'));
-    } else {
-    List<BusSchedule> schedules = snapshot.data!;
-    return ListView.builder(
-    itemCount: schedules.length,
-    itemBuilder: (context, index) {
-    final schedule = schedules[index];
-    return Padding(
-    padding: EdgeInsets.all(8.0),
-    child: Card(
-    elevation: 4,
-      child: ListTile(
-        title: Text('Bus ${schedule.busId} - Circuit ${schedule.circuitId}'),
-        subtitle: Text('Arrival: ${schedule.arrivalTime}, Departure: ${schedule.departureTime}'),
-        trailing: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () async {
-            await DatabaseHelper.deleteBusSchedule(schedule.id!);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Schedule deleted successfully'),
-            ));
-            setState(() {}); // Refresh the list after deletion
-          },
-        ),
       ),
-    ),
-    );
-    },
-    );
-    }
-    },
-    ),
-    ),
-    ],
-    ),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+        children: [
+          DropdownButton<int>(
+            value: _selectedBusId,
+            onChanged: (int? value) {
+              setState(() {
+                _selectedBusId = value!;
+              });
+            },
+            items: _buses.map((bus) {
+              return DropdownMenuItem<int>(
+                value: bus.id!,
+                child: Text(bus.registrationNumber),
+              );
+            }).toList(),
+          ),
+          DropdownButton<int>(
+            value: _selectedCircuitId,
+            onChanged: (int? value) {
+              setState(() {
+                _selectedCircuitId = value!;
+              });
+            },
+            items: _circuits.map((circuit) {
+              return DropdownMenuItem<int>(
+                value: circuit.id!,
+                child: Text(circuit.name), // Assuming 'name' is a property of Circuit
+              );
+            }).toList(),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Heure darrivée'),
+              TextField(
+                controller: _arrivaltime,
+                onTap: () async {
+                  TimeOfDay? selectedTime = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  );
+                  if (selectedTime != null) {
+                    _arrivaltime.text = selectedTime.format(context);
+                  }
+                },
+              ),
+              SizedBox(height: 16.0),
+              Text('Heure de départ'),
+              TextField(
+                controller: _departuretime,
+                onTap: () async {
+                  TimeOfDay? selectedTime = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  );
+                  if (selectedTime != null) {
+                    _departuretime.text = selectedTime.format(context);
+                  }
+                },
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: () {
+              _addBusSchedule(_selectedBusId);
+            },
+            child: Text('Ajouter un horaire'),
+          ),
+          Expanded(
+            child: FutureBuilder<List<BusSchedule>>(
+              future: DatabaseHelper.getBusSchedulesForStation(widget.stationId!),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(
+                      child: Text('Aucun horaire de bus disponible'));
+                } else {
+                  List<BusSchedule> schedules = snapshot.data!;
+                  schedules.forEach((schedule) {
+                    if (schedule.Isdelayed == 1) {
+                      showDelayedNotification(schedule);
+                    }
+                  });
+                  return ListView.builder(
+                    itemCount: schedules.length,
+                    itemBuilder: (context, index) {
+                      final schedule = schedules[index];
+                      return Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 4,
+                          child: ListTile(
+                            title: Text(
+                                'Bus ${schedule.busId} - Circuit ${schedule.circuitId}'),
+                            subtitle: Text(
+                                'Arrival: ${schedule.arrivalTime},  Departure: ${schedule.departureTime}'),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () async {
+                                await DatabaseHelper.deleteBusSchedule(
+                                    schedule.id!);
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                      'Schedule deleted successfully'),
+                                ));
+                                setState(() {}); // Refresh the list after deletion
+                              },
+                            ),
+                            leading: (schedule.Isdelayed == 1)
+                                ? Icon(Icons.timer_off_outlined, color: Colors.red,)
+                                : Icon(Icons.timer_outlined, color: Colors.green,),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
